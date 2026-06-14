@@ -61,6 +61,16 @@ legacy/            # Original vanilla JS prototype (reference)
 3. After setup, users access `/dashboard`, `/progress`, and `/settings`
 4. Timezone defaults to browser detection; override in Settings
 
+## Dashboard (Phase 3)
+
+The curriculum dashboard includes:
+
+- Metrics grid (progress %, books/pages completed, active month focus)
+- Timeline and theme views with filter chips
+- Book cards with SVG gradient covers, completion toggle, edit/delete/reorder
+- Stoic companion panel with customizable daily practice checklist (CRUD)
+- Supabase Realtime sync for books and stoic tasks
+
 ## Development: Mock Date
 
 Set `NEXT_PUBLIC_MOCK_DATE=YYYY-MM-DD` in `.env.local` to test streak and calendar logic without changing production code.

@@ -55,6 +55,11 @@ export type NewBookInput = {
   icon?: string;
   gradient?: string;
   sort_order?: number;
+  is_companion?: boolean;
+};
+
+export type UpdateBookInput = Partial<NewBookInput> & {
+  completed_at?: string | null;
 };
 
 export function useCreateBook() {
@@ -77,6 +82,113 @@ export function useCreateBook() {
 
       if (error) throw error;
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.books });
+    },
+  });
+}
+
+export function useUpdateBook() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: UpdateBookInput;
+    }) => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("books")
+        .update(updates)
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.books });
+    },
+  });
+}
+
+export function useDeleteBook() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const supabase = createClient();
+      const { error } = await supabase.from("books").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.books });
+    },
+  });
+}
+
+export function useToggleBookComplete() {
+  const updateBook = useUpdateBook();
+
+  return useMutation({
+    mutationFn: async ({
+      book,
+      completed,
+    }: {
+      book: Book;
+      completed: boolean;
+    }) => {
+      return updateBook.mutateAsync({
+        id: book.id,
+        updates: {
+          completed_at: completed ? new Date().toISOString() : null,
+        },
+      });
+    },
+  });
+}
+
+export function useReorderBook() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      bookId,
+      direction,
+      books,
+    }: {
+      bookId: string;
+      direction: "up" | "down";
+      books: Book[];
+    }) => {
+      const index = books.findIndex((b) => b.id === bookId);
+      if (index === -1) throw new Error("Book not found");
+
+      const swapIndex = direction === "up" ? index - 1 : index + 1;
+      if (swapIndex < 0 || swapIndex >= books.length) return;
+
+      const current = books[index];
+      const neighbor = books[swapIndex];
+
+      const supabase = createClient();
+      const { error: error1 } = await supabase
+        .from("books")
+        .update({ sort_order: neighbor.sort_order })
+        .eq("id", current.id);
+
+      if (error1) throw error1;
+
+      const { error: error2 } = await supabase
+        .from("books")
+        .update({ sort_order: current.sort_order })
+        .eq("id", neighbor.id);
+
+      if (error2) throw error2;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.books });
