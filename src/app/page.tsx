@@ -1,8 +1,17 @@
 import Link from "next/link";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 export default function LandingPage() {
+  const supabaseReady = isSupabaseConfigured();
+
   return (
     <main className="flex min-h-screen flex-col">
+      {!supabaseReady && (
+        <div className="border-b border-amber-500/30 bg-amber-500/10 px-6 py-3 text-center text-sm text-amber-100">
+          Backend not connected yet — add Supabase environment variables to
+          enable sign-in and data sync.
+        </div>
+      )}
       <header className="border-b border-white/10 px-6 py-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
           <span className="font-display text-xl font-semibold tracking-tight">

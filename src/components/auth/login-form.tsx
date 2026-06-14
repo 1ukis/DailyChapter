@@ -22,7 +22,9 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(
     authError === "auth_callback_failed"
       ? "Authentication failed. Please try again."
-      : null,
+      : authError === "supabase_not_configured"
+        ? "Supabase is not configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your environment variables."
+        : null,
   );
 
   async function handleSubmit(event: React.FormEvent) {
