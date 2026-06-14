@@ -33,3 +33,5 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 }
 
 export default exportedConfig;
+
+import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
