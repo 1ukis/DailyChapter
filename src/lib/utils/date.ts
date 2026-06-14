@@ -37,5 +37,45 @@ export function formatDateForDisplay(
   }).format(date);
 }
 
+export function formatDateShort(
+  dateStr: string,
+  timezone: string,
+): string {
+  const date = new Date(`${dateStr}T12:00:00`);
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+}
+
 /** Number of days in the contribution heatmap (rolling 365-day window). */
 export const CONTRIBUTION_DAYS = 365;
+
+/** Parse YYYY-MM-DD to UTC noon Date for safe arithmetic. */
+export function parseDateString(dateStr: string): Date {
+  return new Date(`${dateStr}T12:00:00`);
+}
+
+/** Add days to a YYYY-MM-DD string, returns YYYY-MM-DD. */
+export function addDaysToDateString(dateStr: string, days: number): string {
+  const date = parseDateString(dateStr);
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+/** Monday = 1 … Sunday = 7 */
+export function getIsoDayOfWeek(dateStr: string): number {
+  const day = parseDateString(dateStr).getDay();
+  return day === 0 ? 7 : day;
+}
+
+export function getRollingYearRange(timezone: string): {
+  start: string;
+  end: string;
+} {
+  const end = getTodayInTimezone(timezone);
+  const start = addDaysToDateString(end, -(CONTRIBUTION_DAYS - 1));
+  return { start, end };
+}

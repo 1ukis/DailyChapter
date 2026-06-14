@@ -71,6 +71,17 @@ The curriculum dashboard includes:
 - Stoic companion panel with customizable daily practice checklist (CRUD)
 - Supabase Realtime sync for books and stoic tasks
 
+## Progress Tracking (Phase 4)
+
+The progress page includes:
+
+- Daily reading log with 4 difficulty levels and dynamic page targets
+- Streak tracking (current + longest) with confetti on goal completion
+- Reading identity levels resolved from user-customizable DB tiers
+- 365-day rolling contribution heatmap
+- Consistency rate chart
+- TBR backlog with add/edit/delete and assign-to-curriculum
+
 ## Development: Mock Date
 
 Set `NEXT_PUBLIC_MOCK_DATE=YYYY-MM-DD` in `.env.local` to test streak and calendar logic without changing production code.

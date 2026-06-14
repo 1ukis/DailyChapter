@@ -9,13 +9,21 @@ type RealtimeTable =
   | "books"
   | "stoic_tasks"
   | "stoic_task_completions"
-  | "profiles";
+  | "profiles"
+  | "logs"
+  | "streaks"
+  | "backlog"
+  | "reading_identity_levels";
 
 const TABLE_QUERY_MAP: Record<RealtimeTable, readonly string[]> = {
   books: queryKeys.books,
   stoic_tasks: queryKeys.stoicTasks,
   stoic_task_completions: queryKeys.stoicCompletions,
   profiles: queryKeys.profile,
+  logs: queryKeys.logs,
+  streaks: queryKeys.streaks,
+  backlog: queryKeys.backlog,
+  reading_identity_levels: queryKeys.identityLevels,
 };
 
 export function useRealtimeSync(..._tables: RealtimeTable[]) {
