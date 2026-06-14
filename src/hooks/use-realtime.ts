@@ -18,15 +18,16 @@ const TABLE_QUERY_MAP: Record<RealtimeTable, readonly string[]> = {
   profiles: queryKeys.profile,
 };
 
-export function useRealtimeSync(...tables: RealtimeTable[]) {
+export function useRealtimeSync(..._tables: RealtimeTable[]) {
   const queryClient = useQueryClient();
-  const tablesKey = tables.join(",");
+  const tablesKey = _tables.join(",");
 
   useEffect(() => {
     const supabase = createClient();
     const channel = supabase.channel("dashboard-realtime");
+    const tableList = tablesKey.split(",") as RealtimeTable[];
 
-    tables.forEach((table) => {
+    tableList.forEach((table) => {
       channel.on(
         "postgres_changes",
         { event: "*", schema: "public", table },
