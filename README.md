@@ -34,15 +34,16 @@ legacy/            # Original vanilla JS prototype (reference)
    cp .env.example .env.local
    ```
 
-2. Install dependencies:
+2. In Supabase Dashboard → Authentication → Providers, enable:
+   - Email
+   - Google OAuth
+   - GitHub OAuth
+   - Add redirect URL: `http://localhost:3000/auth/callback`
+
+3. Install dependencies and run:
 
    ```bash
    npm install
-   ```
-
-3. Run the development server:
-
-   ```bash
    npm run dev
    ```
 
@@ -52,6 +53,13 @@ legacy/            # Original vanilla JS prototype (reference)
    supabase start
    supabase db reset
    ```
+
+## Auth & Onboarding Flow
+
+1. Sign up via email/password, Google, or GitHub
+2. New users are redirected to `/setup` to add books manually, import a template, or skip
+3. After setup, users access `/dashboard`, `/progress`, and `/settings`
+4. Timezone defaults to browser detection; override in Settings
 
 ## Development: Mock Date
 

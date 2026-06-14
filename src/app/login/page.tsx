@@ -1,4 +1,6 @@
+import { LoginForm } from "@/components/auth/login-form";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function LoginPage() {
   return (
@@ -6,11 +8,16 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-2xl border border-white/10 bg-card p-8">
         <h1 className="font-display text-2xl font-bold">Sign in</h1>
         <p className="mt-2 text-sm text-muted">
-          Auth UI (email, Google, GitHub) arrives in Phase 2.
+          Continue your reading journey.
         </p>
+        <div className="mt-6">
+          <Suspense fallback={<p className="text-sm text-muted">Loading...</p>}>
+            <LoginForm />
+          </Suspense>
+        </div>
         <Link
           href="/"
-          className="mt-6 inline-block text-sm text-accent hover:underline"
+          className="mt-6 inline-block text-sm text-muted hover:text-foreground"
         >
           Back to home
         </Link>
