@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "env:check": "node scripts/check-env.mjs"
+    "env:check": "node scripts/check-env.mjs",
+    "setup": "node scripts/setup.mjs"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.57.0",
