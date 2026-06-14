@@ -1,4 +1,7 @@
 export async function register() {
+  const { logSupabaseEnvStatus } = await import("./lib/supabase/env");
+  logSupabaseEnvStatus("runtime");
+
   if (process.env.NEXT_RUNTIME === "nodejs") {
     await import("../sentry.server.config");
   }

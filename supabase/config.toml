@@ -25,8 +25,13 @@ port = 54324
 
 [auth]
 enabled = true
+# Local dev defaults. For production, set matching URLs in Supabase Dashboard:
+# Authentication → URL Configuration → Site URL + Redirect URLs
 site_url = "http://localhost:3000"
-additional_redirect_urls = ["http://localhost:3000/auth/callback"]
+additional_redirect_urls = [
+  "http://localhost:3000/auth/callback",
+  "https://*.vercel.app/auth/callback"
+]
 jwt_expiry = 3600
 enable_signup = true
 

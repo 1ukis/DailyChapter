@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+// Build-time env check (logs presence only — never logs secrets)
+import { logSupabaseEnvStatus } from "./src/lib/supabase/env";
+logSupabaseEnvStatus("build");
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   async redirects() {

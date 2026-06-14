@@ -1,15 +1,26 @@
 import { createBrowserClient } from "@supabase/ssr";
-import { getSupabaseEnv } from "@/lib/supabase/env";
+import {
+  assertSupabaseEnv,
+  logSupabaseEnvStatus,
+} from "@/lib/supabase/env";
 import type { Database } from "@/types/database";
 
-export function createClient() {
-  const env = getSupabaseEnv();
+let loggedClientStatus = false;
 
-  if (!env) {
-    throw new Error(
-      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local",
-    );
+export function createClient() {
+  if (!loggedClientStatus && typeof window !== "undefined") {
+    logSupabaseEnvStatus("client");
+    loggedClientStatus = true;
   }
 
-  return createBrowserClient<Database>(env.url, env.anonKey);
+  try {
+    const { url, anonKey } = assertSupabaseEnv();
+    return createBrowserClient<Database>(url, anonKey);
+  } catch (error) {
+    console.error(
+      "[DailyChapter] Failed to initialize Supabase browser client:",
+      error instanceof Error ? error.message : error,
+    );
+    throw error;
+  }
 }
